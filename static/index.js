@@ -48,14 +48,19 @@ function createItem(id, data, side) {
 
 function onArrowClick(e, pushSide){
   var item = e.target.parentNode,
+    side = pushSide=="left"?"right":"left",
     id = item.getAttribute('id'),
-    pushTo = document.querySelector(`.${pushSide=="right"?"right":"left"}`);
+    pushTo = document.querySelector(`.${pushSide}`),
+    localStorageItems = JSON.parse(localStorage.getItem("items"));
+
     item.remove();
     pushTo.appendChild(createItem(id, dataJSON[id], pushSide));
-    
-    var localItems = localStorage.getItem("items");
-    items = localItems 
-    console.log(localItems);
+
+    localStorageItems[side] = localStorageItems[side].filter((e)=>e!==id);
+    if (!localStorageItems[pushSide]) localStorageItems[pushSide] = [];
+    localStorageItems[pushSide].push(id);
+
+    localStorage.setItem("items", JSON.stringify(localStorageItems));
 
 }
 
