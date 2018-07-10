@@ -51,8 +51,12 @@ function onArrowClick(e, pushSide){
     id = item.getAttribute('id'),
     pushTo = document.querySelector(`.${pushSide=="right"?"right":"left"}`);
     item.remove();
-    console.log(pushSide)
     pushTo.appendChild(createItem(id, dataJSON[id], pushSide));
+    
+    var localItems = localStorage.getItem("items");
+    items = localItems 
+    console.log(localItems);
+
 }
 
 function readFile(path, callback){
@@ -69,17 +73,14 @@ function readFile(path, callback){
 
 function init(){
   dataJSON = readFile();
-  if(localStorage.items){
-    Object.keys(localStorage.items).forEach(function(key){
-      let side = key,
-        div = document.querySelector(`.${side}`);
-      items[key].map((e)=> div.appendChild(createItem(e,dataJSON[e],side)));
-    });
-  }else{
-    let side = "left",
+  if(!localStorage.getItem("items")) localStorage.setItem("items", JSON.stringify({"left":Object.keys(dataJSON)}))
+  var data = JSON.parse(localStorage.getItem("items"));
+
+  Object.keys(data).forEach(function(key){
+    let side = key,
       div = document.querySelector(`.${side}`);
-    Object.keys(dataJSON).map((e)=> div.appendChild(createItem(e,dataJSON[e],side)));
-  }
+    data[key].map((e)=>div.appendChild(createItem(e, dataJSON[e],side)));
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function(){
