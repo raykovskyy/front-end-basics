@@ -23,6 +23,8 @@ function createItem(id, data, side) {
 
         let spanAuthor = document.createElement('span'),
           spanAuthorB = document.createElement('b');
+          
+          spanAuthor.className = "author";
           spanAuthor.innerText = `${data.author}`;
           spanAuthorB.innerText = `Автор : `;
 
@@ -76,6 +78,19 @@ function readFile(path, callback){
     return json;
 }
 
+function onFilterAuthtors(text){
+  var filter   = Array.prototype.filter,
+    result   = document.querySelectorAll('div.title'),
+    filtered = filter.call( result, function( node ) {
+      return node.querySelector('span.author').innerText.toLowerCase().indexOf(text.toLowerCase())===-1;
+    }),
+    notFiltered = filter.call( result, function( node ) {
+      return node.querySelector('span.author').innerText.toLowerCase().indexOf(text.toLowerCase())!==-1;
+    });
+  filtered.forEach((e)=>e.parentNode.className=e.parentNode.className+" hide");
+  notFiltered.forEach((e)=>{e.parentNode.className = e.parentNode.className.replace("hide", "")})
+}
+
 function init(){
   dataJSON = readFile();
   if(!localStorage.getItem("items")) localStorage.setItem("items", JSON.stringify({"left":Object.keys(dataJSON)}))
@@ -90,4 +105,11 @@ function init(){
 
 document.addEventListener("DOMContentLoaded", function(){
   init();
+  var timeout;
+  document.querySelector('input[type=text]').addEventListener("keyup", function(e){
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      onFilterAuthtors(e.target.value)
+    }, 100);
+  });
 });
