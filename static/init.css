@@ -23,7 +23,7 @@ div {
 	border: 2px solid green;
 	max-height: 600px;
 	min-width: 450px;
-
+	min-height: 100px;
 }
 
 .right {
@@ -31,6 +31,7 @@ div {
 	border: 2px solid red;
 	max-height: 600px;
 	min-width: 450px;
+	min-height: 100px;
 }
 .item {
 	overflow: hidden;
