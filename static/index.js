@@ -96,10 +96,9 @@ function init(){
   if(!localStorage.getItem("items")) localStorage.setItem("items", JSON.stringify({"left":Object.keys(dataJSON)}))
   var data = JSON.parse(localStorage.getItem("items"));
 
-  Object.keys(data).forEach(function(key){
-    let side = key,
-      div = document.querySelector(`.${side}`);
-    data[key].map((e)=>div.appendChild(createItem(e, dataJSON[e],side)));
+  Object.keys(data).forEach(function(side){
+    let div = document.querySelector(`.${side}`);
+    data[side].map((e)=>div.appendChild(createItem(e, dataJSON[e], side)));
   });
 }
 
